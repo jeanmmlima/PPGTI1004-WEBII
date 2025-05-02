@@ -1,9 +1,13 @@
 package com.jeanlima.inversaodecontrole.service;
 
-public class EmailService {
+import org.springframework.stereotype.Service;
 
-    public String enviar(String destino, String mensagem){
+@Service
+public class EmailService implements MensagemService{
+
+    @Override
+    public String enviar(String destino, String mensagem) {
         return "Notificação enviada via email para " + destino + ": " + mensagem;
     }
-    
+
 }
