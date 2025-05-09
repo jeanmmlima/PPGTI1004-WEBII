@@ -2,6 +2,7 @@ package com.jeanlima.relacionamentos.model;
 
 import java.util.Set;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,6 +12,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -35,6 +37,10 @@ public class Aluno {
         inverseJoinColumns = @JoinColumn(name = "turma_id")
     )
     private Set<Turma> turmas;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "endereco_id", referencedColumnName = "id")
+    private Endereco endereco;
 
     public Aluno() {
     }
@@ -124,6 +130,16 @@ public class Aluno {
 
     public void setTurmas(Set<Turma> turmas) {
         this.turmas = turmas;
+    }
+
+
+    public Endereco getEndereco() {
+        return endereco;
+    }
+
+
+    public void setEndereco(Endereco endereco) {
+        this.endereco = endereco;
     }
 
 
