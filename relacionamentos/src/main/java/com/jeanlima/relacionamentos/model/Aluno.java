@@ -1,11 +1,15 @@
 package com.jeanlima.relacionamentos.model;
 
+import java.util.Set;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
@@ -23,6 +27,14 @@ public class Aluno {
     @ManyToOne
     @JoinColumn(name = "curso_id")
     private Curso curso;
+
+    @ManyToMany
+    @JoinTable(
+        name = "aluno_turma",
+        joinColumns = @JoinColumn(name = "aluno_id"),
+        inverseJoinColumns = @JoinColumn(name = "turma_id")
+    )
+    private Set<Turma> turmas;
 
     public Aluno() {
     }
@@ -56,6 +68,8 @@ public class Aluno {
     public void setCurso(Curso curso) {
         this.curso = curso;
     }
+
+    
 
     @Override
     public String toString() {
@@ -100,6 +114,16 @@ public class Aluno {
         } else if (!curso.equals(other.curso))
             return false;
         return true;
+    }
+
+
+    public Set<Turma> getTurmas() {
+        return turmas;
+    }
+
+
+    public void setTurmas(Set<Turma> turmas) {
+        this.turmas = turmas;
     }
 
 
