@@ -1,10 +1,9 @@
 package com.jeanlima.relacionamentos.controller;
 
-
-
 import java.util.List;
 import java.util.Optional;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.jeanlima.relacionamentos.model.Aluno;
 import com.jeanlima.relacionamentos.model.Turma;
 import com.jeanlima.relacionamentos.repository.TurmaRepository;
 
@@ -23,6 +23,7 @@ import com.jeanlima.relacionamentos.repository.TurmaRepository;
 @RequestMapping("/turmas")
 public class TurmaController {
 
+    private static final Logger logger = LoggerFactory.getLogger(TurmaController.class);
 
     @Autowired
     private TurmaRepository turmaRepository;
@@ -45,8 +46,18 @@ public class TurmaController {
     @GetMapping("/{id}")
     public ResponseEntity<Turma> buscarTurmaPorId(@PathVariable Long id) {
         Optional<Turma> turma = turmaRepository.findById(id);
+
+        // Aqui, os alunos ainda **não foram carregados**
+        logger.info("Turma carregada: " + turma.get().getCodigo());
+
+        // Agora, ao acessar os alunos, ocorre uma nova consulta (lazy loading)
+        logger.info("Alunos da turma:");
+        for (Aluno aluno : turma.get().getAlunos()) {
+            logger.info(aluno.getNome()); // Aqui o banco é acessado
+        }
+
         return turma.map(ResponseEntity::ok)
-                    .orElseGet(() -> ResponseEntity.notFound().build());
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     // Atualizar turma
@@ -75,5 +86,5 @@ public class TurmaController {
             return ResponseEntity.notFound().build();
         }
     }
-    
+
 }

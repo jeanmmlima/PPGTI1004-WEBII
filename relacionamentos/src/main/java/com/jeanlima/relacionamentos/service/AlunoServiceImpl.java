@@ -68,5 +68,26 @@ public class AlunoServiceImpl implements AlunoService{
         return alunoRepository.findAll();
     }
 
+    @Override
+    public List<Aluno> findAlunosByNome(String nome) {
+        return alunoRepository.findByNomeAluno(nome);
+    }
+
+    @Override
+    public void deleteByNome(String nome) {
+        alunoRepository.deleteByNome(nome);
+    }
+
+    @Override
+    public List<Aluno> findAlunosByCursoId(Long cursoId) {
+        return alunoRepository.findAllByCursoId(cursoId);
+    }
+
+    @Override
+    public List<Aluno> findAlunosWithTurmas() {
+        return alunoRepository.findAlunosWithTurmas();
+    }
+
+
     
 }

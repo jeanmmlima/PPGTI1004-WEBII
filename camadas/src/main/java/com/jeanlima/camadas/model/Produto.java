@@ -8,7 +8,7 @@ public class Produto {
     private String nome;
     private BigDecimal preco;
 
-    
+
 
     public Produto(Long id, String nome, BigDecimal preco) {
         this.id = id;

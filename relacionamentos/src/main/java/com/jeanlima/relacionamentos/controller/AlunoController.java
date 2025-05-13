@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.jeanlima.relacionamentos.model.Aluno;
 import com.jeanlima.relacionamentos.service.AlunoService;
-import com.jeanlima.relacionamentos.service.CursoService;
+
 
 @RestController
 @RequestMapping("/alunos")
@@ -35,6 +35,7 @@ public class AlunoController {
     public ResponseEntity<Aluno> findAlunoById(@PathVariable Long id) {
         try {
             Aluno aluno = alunoService.getAlunoById(id);
+
             return ResponseEntity.ok(aluno);
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
@@ -72,5 +73,19 @@ public class AlunoController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @GetMapping("/porCurso/{id}")
+    public ResponseEntity<List<Aluno>> findAlunosByCurso(@PathVariable Long id){
+        List<Aluno> alunosByCurso = alunoService.findAlunosByCursoId(id);
+        return ResponseEntity.ok(alunosByCurso);
+    }
+
+    @GetMapping("/comTurmas")
+    public ResponseEntity<List<Aluno>> findAlunoWithTurmas(){
+        List<Aluno> alunosWithTurmas = alunoService.findAlunosWithTurmas();
+        return ResponseEntity.ok(alunosWithTurmas);
+    }
+
+    
     
 }

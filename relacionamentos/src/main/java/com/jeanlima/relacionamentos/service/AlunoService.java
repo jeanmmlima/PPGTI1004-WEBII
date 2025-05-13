@@ -14,4 +14,12 @@ public interface AlunoService {
     public Aluno getAlunoById(Long id);
     public List<Aluno> getListAluno();
 
+    List<Aluno> findAlunosByNome(String nome);
+
+    void deleteByNome(String nome);
+
+    List<Aluno> findAlunosByCursoId(Long cursoId);
+
+    List<Aluno> findAlunosWithTurmas();
+
 }

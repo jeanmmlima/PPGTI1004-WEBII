@@ -9,20 +9,30 @@ import org.springframework.data.repository.query.Param;
 
 import com.jeanlima.relacionamentos.model.Aluno;
 
-public interface AlunoRepository extends JpaRepository<Aluno,Long>{
+import jakarta.transaction.Transactional;
+
+public interface AlunoRepository extends JpaRepository<Aluno, Long> {
 
     /*
      * Trabalhando com @Query
      */
 
-    //sql nativo
-    @Query(value = " select * from alunos a where a.nome like %:nome% ",nativeQuery = true)
+    List<Aluno> findByNome(String nome);
+
+    @Query(value = "SELECT * FROM alunos a WHERE a.nome LIKE %:nome%", nativeQuery = true)
     List<Aluno> findByNomeAluno(@Param("nome") String nome);
 
-    @Query(value = " delete from Aluno c where c.nome =:nome")
-    @Modifying //pois não é só consulta - transactional 
-    void deletarPorNome(String nome);
+    @Modifying
+    @Transactional
+    @Query("DELETE FROM Aluno a WHERE a.nome = :nome")
+    void deleteByNome(@Param("nome") String nome);
 
-    @Query(value = " select e.* from aluno e where e.curso_id = ?1",nativeQuery = true)
-    List<Aluno> findAllByIdCurso(Integer id);
+    @Query(value = "SELECT * FROM alunos a WHERE a.curso_id = ?1", nativeQuery = true)
+    List<Aluno> findAllByCursoId(Long cursoId);
+
+    @Query("SELECT a FROM Aluno a LEFT JOIN FETCH a.turmas")
+    List<Aluno> findAlunosWithTurmas();
+
+    @Query("SELECT a FROM Aluno a WHERE a.curso.descricao = :nomeCurso")
+    List<Aluno> buscarPorNomeDoCurso(@Param("nomeCurso") String nomeCurso);
 }
