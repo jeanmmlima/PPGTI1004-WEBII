@@ -28,6 +28,7 @@ public class PedidoController {
     @Autowired
     private PedidoService service;
 
+    @Autowired
     private DTOHelper dtoHelper;
 
     @PostMapping

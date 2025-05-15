@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.jeanlima.minhaapi.api.dto.ClienteDTO;
 import com.jeanlima.minhaapi.model.Cliente;
 import com.jeanlima.minhaapi.repository.ClienteRepository;
 
@@ -17,8 +18,13 @@ public class ClienteService {
     @Autowired
     private ClienteRepository clienteRepository;
 
-    public Cliente save(Cliente cliente){
-        return clienteRepository.save(cliente);
+    public Cliente save(ClienteDTO cliente){
+
+        Cliente novoCliente = new Cliente();
+        novoCliente.setNome(cliente.getNome());
+        novoCliente.setCpf(cliente.getCpf());
+
+        return clienteRepository.save(novoCliente);
     }
 
     public void update(Integer id, Cliente cliente){
