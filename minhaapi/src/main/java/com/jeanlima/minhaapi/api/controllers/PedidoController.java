@@ -16,10 +16,13 @@ import org.springframework.web.server.ResponseStatusException;
 import com.jeanlima.minhaapi.api.dto.AtualizacaoStatusPedidoDTO;
 import com.jeanlima.minhaapi.api.dto.InformacoesPedidoDTO;
 import com.jeanlima.minhaapi.api.dto.PedidoDTO;
+import com.jeanlima.minhaapi.api.mapper.InformacoesPedidoMapper;
 import com.jeanlima.minhaapi.enums.StatusPedido;
-import com.jeanlima.minhaapi.helpers.DTOHelper;
 import com.jeanlima.minhaapi.model.Pedido;
 import com.jeanlima.minhaapi.service.PedidoService;
+
+import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/pedidos")
@@ -29,20 +32,21 @@ public class PedidoController {
     private PedidoService service;
 
     @Autowired
-    private DTOHelper dtoHelper;
+    private InformacoesPedidoMapper informacoesPedidoMapper;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Integer save( @RequestBody PedidoDTO dto ){
+    public Integer save(@Valid @RequestBody PedidoDTO dto ){
         Pedido pedido = service.salvar(dto);
         return pedido.getId();
     }
 
+    @Operation(summary = "Buscar pedido por ID", description = "Retorna os dados de um pedido a partir do ID informado.")
     @GetMapping("{id}")
     public InformacoesPedidoDTO getById( @PathVariable Integer id ){
         return service
                 .obterPedidoCompleto(id)
-                .map( p -> dtoHelper.convertPedidoToInformacoesPedido(p) )
+                .map( p -> informacoesPedidoMapper.toInformacoesPedidoDTO(p) )
                 .orElseThrow(() ->
                         new ResponseStatusException(HttpStatus.NOT_FOUND, "Pedido não encontrado."));
     }

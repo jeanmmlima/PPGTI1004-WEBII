@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.fasterxml.jackson.core.io.BigDecimalParser;
 import com.jeanlima.minhaapi.enums.StatusPedido;
 
 import jakarta.persistence.Column;
@@ -26,7 +27,7 @@ public class Pedido {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    //Um cliente pode ter muitos pedidos!
+    // Um cliente pode ter muitos pedidos!
     @ManyToOne
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
@@ -34,10 +35,9 @@ public class Pedido {
     @Column
     private LocalDate dataPedido;
 
-    //1000.00
-    @Column(name = "total", precision = 20,scale = 2)
+    // 1000.00
+    @Column(name = "total", precision = 20, scale = 2)
     private BigDecimal total;
-
 
     @OneToMany(mappedBy = "pedido")
     private List<ItemPedido> itens;
@@ -49,44 +49,67 @@ public class Pedido {
     public Integer getId() {
         return id;
     }
+
     public void setId(Integer id) {
         this.id = id;
     }
+
     public Cliente getCliente() {
         return cliente;
     }
+
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
     }
-    
+
     public BigDecimal getTotal() {
         return total;
     }
+
     public void setTotal(BigDecimal total) {
         this.total = total;
     }
+
     public LocalDate getDataPedido() {
         return dataPedido;
     }
+
     public void setDataPedido(LocalDate dataPedido) {
         this.dataPedido = dataPedido;
     }
+
     public List<ItemPedido> getItens() {
         return itens;
     }
+
     public void setItens(List<ItemPedido> itens) {
         this.itens = itens;
     }
+
     @Override
     public String toString() {
         return "Pedido [dataPedido=" + dataPedido + ", id=" + id + ", total=" + total + "]";
     }
+
     public StatusPedido getStatus() {
         return status;
     }
+
     public void setStatus(StatusPedido status) {
         this.status = status;
     }
+
+    public double calculateTotalPedido() {
+
+        double total = itens
+                .stream()
+                .mapToDouble(item -> item.getQuantidade() * item.getProduto().getPreco().doubleValue())
+                .sum();
+
+       return total;
+
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;
@@ -99,6 +122,7 @@ public class Pedido {
         result = prime * result + ((status == null) ? 0 : status.hashCode());
         return result;
     }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
@@ -138,9 +162,4 @@ public class Pedido {
         return true;
     }
 
-    
-    
-
-    
-    
 }

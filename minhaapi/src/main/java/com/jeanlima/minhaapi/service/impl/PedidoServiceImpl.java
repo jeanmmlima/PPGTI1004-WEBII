@@ -1,4 +1,5 @@
 package com.jeanlima.minhaapi.service.impl;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
@@ -47,7 +48,7 @@ public class PedidoServiceImpl implements PedidoService {
                 .orElseThrow(() -> new RegraNegocioException("Código de cliente inválido."));
 
         Pedido pedido = new Pedido();
-        pedido.setTotal(dto.getTotal());
+        //pedido.setTotal(dto.getTotal());
         pedido.setDataPedido(LocalDate.now());
         pedido.setCliente(cliente);
         pedido.setStatus(StatusPedido.REALIZADO);
@@ -56,6 +57,10 @@ public class PedidoServiceImpl implements PedidoService {
         repository.save(pedido);
         itemsPedidoRepository.saveAll(itemsPedido);
         pedido.setItens(itemsPedido);
+        pedido.setTotal(BigDecimal.valueOf(pedido.calculateTotalPedido()));
+
+
+
         return pedido;
     }
     private List<ItemPedido> converterItems(Pedido pedido, List<ItemPedidoDTO> items){
@@ -82,6 +87,7 @@ public class PedidoServiceImpl implements PedidoService {
                 }).collect(Collectors.toList());
 
     }
+
     @Override
     public Optional<Pedido> obterPedidoCompleto(Integer id) {
         return repository.findByIdFetchItens(id);
