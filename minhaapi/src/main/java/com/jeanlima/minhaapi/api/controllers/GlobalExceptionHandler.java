@@ -9,7 +9,7 @@ import com.jeanlima.minhaapi.exceptions.RegraNegocioException;
 
 
 @RestControllerAdvice //trata os exceptionHandlers --> trata erros quando eles acontecem
-public class ApplicationControllerAdvice {
+public class GlobalExceptionHandler {
 
     /* 
      * toda vez que api lançar essa exceção, cairá aqui!
