@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-IoCApplication<inversaodecontrole>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.jeanlima.inversaodecontrole.IoCApplication",
+            "projectName": "inversaodecontrole",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
