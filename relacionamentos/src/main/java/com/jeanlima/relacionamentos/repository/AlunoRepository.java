@@ -19,7 +19,7 @@ public interface AlunoRepository extends JpaRepository<Aluno, Long> {
 
     List<Aluno> findByNome(String nome);
 
-    @Query(value = "SELECT * FROM alunos a WHERE a.nome LIKE %:nome%", nativeQuery = true)
+    @Query(value = "SELECT * FROM alunos a WHERE a.nome LIKE '%:nome%'", nativeQuery = true)
     List<Aluno> findByNomeAluno(@Param("nome") String nome);
 
     @Modifying
