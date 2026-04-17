@@ -16,7 +16,7 @@ public interface AlunoRepository extends JpaRepository<Aluno,Long>{
      */
 
     //sql nativo
-    @Query(value = " select * from alunos a where a.nome like %:nome% ",nativeQuery = true)
+    @Query(value = " select * from alunos a where a.nome like '%:nome%'",nativeQuery = true)
     List<Aluno> findByNomeAluno(@Param("nome") String nome);
 
     @Query(value = " delete from Aluno c where c.nome =:nome")
