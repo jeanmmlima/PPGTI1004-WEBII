@@ -21,7 +21,7 @@ public interface ClienteRepository extends JpaRepository<Cliente,Integer>{
     List<Cliente> encontrarPorNome(@Param("nome") String nome);
 
     //sql nativo
-    @Query(value = " select * from cliente c where c.nome like %:nome% ",nativeQuery = true)
+    @Query(value = " select * from cliente c where c.nome like '%:nome%' ",nativeQuery = true)
     List<Cliente> encontrarPorNomeMod(@Param("nome") String nome);
 
     @Query(value = " delete from Cliente c where c.nome =:nome")
